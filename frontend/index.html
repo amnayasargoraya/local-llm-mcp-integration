@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>LLM Test-Client</title>
+  <style>
+    body { font-family: sans-serif; max-width: 700px; margin: 2em auto; }
+    textarea { width: 100%; height: 100px; margin-bottom: 1em; }
+    button { padding: 10px 20px; font-size: 1em; }
+    #response {
+      margin-top: 1em;
+      white-space: pre-wrap;
+      background: #f4f4f4;
+      padding: 1em;
+      border-radius: 5px;
+      border-left: 4px solid #ccc;
+    }
+    .error { color: darkred; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>🧠 LLM Test-Client</h1>
+  <label for="prompt">Dein Prompt:</label><br>
+  <textarea id="prompt">Erkläre künstliche Intelligenz in einfachen Worten.</textarea><br>
+  <button onclick="callLLM()">Senden</button>
+
+  <div id="response"></div>
+
+  <script>
+    async function callLLM() {
+      const prompt = document.getElementById("prompt").value.trim();
+      const resEl = document.getElementById("response");
+      if (!prompt) {
+        resEl.innerHTML = "<span class='error'>⚠️ Bitte gib einen Prompt ein.</span>";
+        return;
+      }
+
+      resEl.textContent = "⏳ Anfrage wird gesendet...";
+
+      try {
+        const response = await fetch("http://localhost:8000/call-tool", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: "ask_llm",
+            arguments: { prompt }
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Serverfehler: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.success && result.result?.[0]?.text) {
+          resEl.textContent = result.result[0].text;
+        } else {
+          resEl.innerHTML = "<span class='error'>⚠️ Keine Antwort erhalten.</span>";
+        }
+      } catch (error) {
+        resEl.innerHTML = `<span class='error'>❌ Fehler: ${error.message}</span>`;
+      }
+    }
+  </script>
+</body>
+</html>
