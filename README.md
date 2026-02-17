@@ -76,13 +76,13 @@ http://localhost:11434
 
 ## Swagger API
 
-![Swagger](images/03_Swagger.png)
+![Swagger](images/02_Swagger.png)
 
 ---
 
 ## Health Check
 
-![Healthcheck](images/05_Healthcheck.png)
+![Healthcheck](images/03_Healthcheck.png)
 
 ---
 
@@ -94,13 +94,13 @@ http://localhost:11434
 
 ## LLM Test via Curl
 
-![Tool Test](images/02_Tool-Test.png)
+![Tool Test](images/06_Tool-Test.png)
 
 ---
 
 ## Web Test Client
 
-![Web Client](images/08_WebIlustration.png)
+![Web Client](images/05_WebIlustration.png)
 
 ---
 
